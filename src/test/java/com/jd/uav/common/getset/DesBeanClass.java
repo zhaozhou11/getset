@@ -1,15 +1,16 @@
 package com.jd.uav.common.getset;
 
-import com.jd.uav.common.getset.annotation.GetSet;
-import com.jd.uav.common.getset.factory.GetSetFactory;
+
+import com.zhaozhou.frame.property.annotation.PropertyCopy;
+import com.zhaozhou.frame.property.factory.PropertyCopySolver;
 
 /**
  * Created by zhaozhou on 2018/7/11.
  */
 public class DesBeanClass {
-    @GetSet(name = "sex")
+    @PropertyCopy(name = "sex")
     private String name;
-    @GetSet(name = "age", resolverClass = java.lang.String.class, resolverMethod = "valueOf")
+    @PropertyCopy(name = "age", transClass = java.lang.String.class, transMethod = "valueOf")
     private String age;
 
     private String sex;
@@ -48,7 +49,12 @@ public class DesBeanClass {
 
         //Object o = GetSetFactory.getValueFromBean(src,"age");
 
-        DesBeanClass des = (DesBeanClass)GetSetFactory.getSetResolver(src, new DesBeanClass());
-        String age = des.getAge();
+        try {
+            DesBeanClass des = (DesBeanClass)PropertyCopySolver.copyJavaBean(src, new DesBeanClass());
+            String age = des.getAge();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
